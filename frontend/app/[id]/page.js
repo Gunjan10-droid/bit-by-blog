@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
 export default function BlogDetails() {
     const { id } = useParams();
     const router = useRouter();
@@ -10,7 +11,7 @@ export default function BlogDetails() {
 
     useEffect(() => {
         const fetchBlog = async () => {
-            const res = await fetch(`http://localhost:5000/api/blogs/${id}`);
+            const res = await fetch(`${API_BASE}/api/blogs/${id}`);
             const data = await res.json();
             setBlog(data);
         };
@@ -19,7 +20,7 @@ export default function BlogDetails() {
     const handleDelete = async () => {
         const confirm = window.confirm('Are you sure you want to delete this blog?');
         if (!confirm) return;
-        const res = await fetch(`http://localhost:5000/api/blogs/${id}`, {
+        const res = await fetch(`${API_BASE}/api/blogs/${id}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -56,7 +57,6 @@ export default function BlogDetails() {
                         </>
                     )}
                 </div>
-
             </div>
         </main>
     )

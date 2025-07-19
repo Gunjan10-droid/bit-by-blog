@@ -1,18 +1,16 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
 export default function EditBlog() {
   const { id } = useParams();
   const router = useRouter();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [token, setToken] = useState('');
-
   useEffect(() => {
     const savedToken = localStorage.getItem('token');
 
-    // If not logged in, redirect
     if (!savedToken) {
       router.push('/login');
       return;
@@ -22,7 +20,7 @@ export default function EditBlog() {
 
     const fetchBlog = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/blogs/${id}`);
+        const res = await fetch(`${API_BASE}/api/blogs/${id}`);
         const data = await res.json();
         setTitle(data.title);
         setContent(data.content);
@@ -36,7 +34,7 @@ export default function EditBlog() {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
-    const res = await fetch(`http://localhost:5000/api/blogs/${id}`, {
+    const res = await fetch(`${API_BASE}/api/blogs/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

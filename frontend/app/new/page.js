@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
 export default function NewBlog() {
   const router = useRouter();
   const [title, setTitle] = useState('');
@@ -20,7 +20,7 @@ export default function NewBlog() {
     try {
       const token = localStorage.getItem('token');
 
-      const res = await fetch("http://localhost:5000/api/blogs", {
+      const res = await fetch(`${API_BASE}/api/blogs`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

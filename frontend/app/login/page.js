@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
 export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -13,7 +13,7 @@ export default function Login() {
   }, []);
   const handleLogin = async (e) => {
     e.preventDefault();
-    const res = await fetch('http://localhost:5000/api/auth/login', {
+    const res = await fetch(`${API_BASE}/api/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password }),
@@ -23,11 +23,8 @@ export default function Login() {
       localStorage.setItem('token', data.token);
       router.push('/');
     } else {
-      setError(data.error); // set error to show in UI
-    }
-
-  };
-
+      setError(data.error); 
+    }};
   return (
     <form onSubmit={handleLogin} className="p-6 bg-white max-w-md mx-auto mt-10 rounded-xl shadow">
       <h2 className="text-2xl text-purple-700 items-center flex justify-center font-bold mb-4">Login</h2>
@@ -43,7 +40,6 @@ export default function Login() {
   placeholder="Password"
   required
 />
-
       <button className="bg-purple-700 text-white px-4 py-2 rounded-full w-full">Login</button>
     </form>
   );

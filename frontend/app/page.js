@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
 export default function Home() {
   const [blogs, setBlogs] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -11,7 +11,11 @@ export default function Home() {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/blogs');
+        if (!API_BASE) {
+          console.error("API base URL is not defined");
+          return;
+        }
+        const res = await fetch(`${API_BASE}/api/blogs`);
         const data = await res.json();
         setBlogs(data);
       } catch (err) {
@@ -73,5 +77,3 @@ export default function Home() {
     </main>
   );
 }
-
-
