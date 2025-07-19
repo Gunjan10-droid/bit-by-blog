@@ -6,20 +6,21 @@ export default function NewBlog() {
   const router = useRouter();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const token = localStorage.getItem('token');
+  const [token, setToken] = useState(null);
 
   useEffect(() => {
-    if (!token) {
+    const storedToken = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+    if (!storedToken) {
       router.push('/login');
+    } else {
+      setToken(storedToken);
     }
-  }, [token]);
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const newPost = { title, content };
+    if (!token) return;
     try {
-      const token = localStorage.getItem('token');
-
       const res = await fetch(`${API_BASE}/api/blogs`, {
         method: "POST",
         headers: {
